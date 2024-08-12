@@ -8,17 +8,9 @@ class App extends Component {
     super(props)
 
     this.state = {
-      editIdx: null,
       inputValue: "",
       listOfTodos: []
     }
-  }
-
-  handleEdit = (index) => {
-    this.setState({
-      editIdx: index,
-      inputValue: this.state.listOfTodos[index]
-    })
   }
 
   handleChange = (event) => {
@@ -26,33 +18,18 @@ class App extends Component {
   }
 
   handleSubmit = (event) => {
-      event.preventDefault();
-      const { editIdx, inputValue, listOfTodos } = this.state;
-
-      if (editIdx !== null) {
-        // Update the existing item
-        const updatedTodos = listOfTodos.map((todo, index) => 
-          index === editIdx ? inputValue : todo
-        );
-        this.setState({
-          listOfTodos: updatedTodos,
-          editIdx: null,
-          inputValue: ""
-        });
-      } else {
-        // Add a new item
-        this.setState({
-          listOfTodos: [...listOfTodos, inputValue],
-          inputValue: ""
-        });
-      }
-    }
+    event.preventDefault();
+      // Add a new item
+      this.setState({
+        listOfTodos: [...this.state.listOfTodos, this.state.inputValue],
+        inputValue: ""
+      });
+  }
 
   deleteItem = (index) => {
     let objectCopy = [...this.state.listOfTodos]
     objectCopy.splice(index, 1)
     this.setState({listOfTodos: [...objectCopy]})
-    
   }
 
   render() {
@@ -68,11 +45,6 @@ class App extends Component {
           </form>
           <ol>{this.state.listOfTodos.map((todo, index) => {
             return <TodoCard key={index} index={index} title={todo} clickToRemove={this.deleteItem}/>
-              // &nbsp;
-              // <button onClick={() => this.handleClick(index)}>Delete</button>
-              // &nbsp;
-              // <button onClick={() => this.handleEdit(index)}>Edit</button>
-            
           })}</ol>
           <a
             className="App-link"
